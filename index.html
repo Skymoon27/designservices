@@ -1077,23 +1077,31 @@
     }
 
     function initiateToyyibPayCheckout() {
-        if (!currentUser) {
-            showToast("Please sign in or register to complete checking out.", "error");
-            switchView('customer-auth');
-            toggleCartDrawer(false);
-            return;
-        }
+       // 1. Direct verify against LocalStorage instead of the 'currentUser' variable
+    const rawSession = localStorage.getItem("current_session_user");
+    const activeUser = rawSession ? JSON.parse(rawSession) : null;
 
-        if (cart.length === 0) {
-            showToast("Add products to your basket before checking out.", "error");
-            return;
-        }
+    if (!activeUser) {
+        showToast("Please sign in or register to complete checking out.", "error");
+        switchView('customer-auth');
+        toggleCartDrawer(false);
+        return;
+    }
 
-        const brief = document.getElementById('checkout-brief-text').value.trim();
-        if (!brief) {
-            showToast("Please provide design briefs/instructions.", "error");
-            return;
-        }
+    // 2. Proceed with the logic using 'activeUser'
+    if (cart.length === 0) {
+        showToast("Add products to your basket before checking out.", "error");
+        return;
+    }
+
+    const brief = document.getElementById('checkout-brief-text').value.trim();
+    if (!brief) {
+        showToast("Please provide design briefs/instructions.", "error");
+        return;
+    }
+
+    // ... rest of your existing code remains the same
+}
 
         // Display ToyyibPay simulated bank selector
         const cartTotalText = document.getElementById('cart-total-price').innerText;
