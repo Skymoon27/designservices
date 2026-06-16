@@ -190,7 +190,7 @@
             <div class="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center text-2xl mx-auto">🔒</div>
             <h3 class="text-xl sm:text-2xl font-black text-white">Direct ToyyibPay FPX Processing</h3>
             <p class="text-slate-400 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed">
-                Transactions are authorized with secure Malaysian bank transfers. All digital checkouts are securely prepared for dispatch to: <code class="text-yellow-400 bg-slate-900 px-1.5 py-0.5 rounded text-[11px] sm:text-xs font-mono">http://toyyibpay.com/brandworks</code>.
+                Transactions are authorized with secure Malaysian bank transfers. All digital checkouts are securely prepared for dispatch to: <code class="text-yellow-400 bg-slate-900 px-1.5 py-0.5 rounded text-[11px] sm:text-xs font-mono">https://toyyibpay.com/brandworks</code>.
             </p>
         </section>
     </div>
@@ -424,13 +424,13 @@
                                     <th class="pb-2 font-bold uppercase">Status</th>
                                     <th class="pb-2 font-bold uppercase text-right">Actions</th>
                                 </tr>
-                            </thead>
+                            </table>
                             <tbody id="admin-orders-table" class="divide-y divide-slate-900">
                                 <tr>
                                     <td colspan="6" class="text-center py-4 text-slate-500 italic">No global transactions logs found.</td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </div>
                     </div>
                 </div>
 
@@ -933,7 +933,6 @@
         renderCartContent();
     }
 
-    // Dynamic Badge Counter
     function updateCartBadgeCount() {
         const totalQty = cart.reduce((acc, item) => acc + item.quantity, 0);
         const badge = document.getElementById('cart-badge');
@@ -1068,16 +1067,14 @@
         const activeBtn = document.getElementById(`bank-btn-${bankId}`);
 
         activeRadio.className = "w-3.5 h-3.5 rounded-full border border-yellow-400 flex items-center justify-center p-0.5";
-            activeDot.className = "w-full h-full rounded-full bg-yellow-400";
+        activeDot.className = "w-full h-full rounded-full bg-yellow-400";
         activeBtn.className = "p-3 bg-slate-950 border border-yellow-400/50 rounded-xl text-left transition-all duration-300 flex items-center space-x-2 w-full shadow shadow-yellow-400/5";
     }
 
-    // Closes Simulated Bank Selector
     function closeToyyibpayModal() {
         document.getElementById('toyyibpay-modal').classList.add('hidden');
     }
 
-    // Core Processing Machine: Generates Order IDs and routes them to customer + admin dashboards
     function processToyyibPaySimulation() {
         if (!selectedBankId) {
             showToast("Please choose a payment bank option.", "error");
@@ -1089,7 +1086,7 @@
         proceedBtn.disabled = true;
         proceedBtn.innerHTML = `
             <svg class="animate-spin h-4 w-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            <span>Authorizing bank transfer...</span>
+            <span>Connecting to secure gateway...</span>
         `;
 
         setTimeout(() => {
@@ -1115,6 +1112,7 @@
             currentOrdersList.unshift(newOrderObj);
             localStorage.setItem("admin_orders", JSON.stringify(currentOrdersList));
 
+            // Clean local memory states before linking out
             cart = [];
             updateCartBadgeCount();
             document.getElementById('checkout-brief-text').value = "";
@@ -1127,12 +1125,14 @@
             renderCustomerProfileOrdersList();
             updateAdminControlDashboard();
 
-            showToast(`Transaction authorized! Order ${randomOrderId} successfully registered.`);
-            switchView('customer-auth');
-        }, 2200);
+            // Compile target direct redirection string url pointing straight to payment link
+            const targetBillUrl = `https://toyyibpay.com/brandworks?billTitle=${encodeURIComponent(newOrderObj.items[0]?.title || 'Graphic Custom Design Bundle')}&billDescription=${encodeURIComponent('OrderID: ' + randomOrderId + ' - Brief: ' + designBriefValue)}&billPrice=${billingNum}&billName=${encodeURIComponent(currentUser.username)}&billEmail=${encodeURIComponent(currentUser.email)}&billPhone=${encodeURIComponent(currentUser.phone)}`;
+            
+            showToast("Redirecting to your payment form...");
+            window.location.href = targetBillUrl;
+        }, 1500);
     }
 
-    // Sync Customer Portal view list elements
     function renderCustomerProfileOrdersList() {
         const orderContainer = document.getElementById('cust-orders-log-list');
         orderContainer.innerHTML = "";
@@ -1162,7 +1162,6 @@
         });
     }
 
-    // Update Admin Portal view streams
     function updateAdminControlDashboard() {
         const orders = JSON.parse(localStorage.getItem("admin_orders")) || [];
         const usersDatabase = JSON.parse(localStorage.getItem("active_users")) || {};
