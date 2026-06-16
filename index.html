@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Brandworkz Co | Premium Graphic Design Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -107,9 +107,6 @@
                         <button onclick="document.getElementById('storefront-section').scrollIntoView();" class="w-full sm:w-auto px-6 py-3 bg-yellow-400 text-slate-950 font-extrabold text-xs rounded-xl hover:bg-yellow-500 transition-all text-center uppercase tracking-wider">
                             Explore Catalog
                         </button>
-                        <button onclick="switchView('store')" class="w-full sm:w-auto px-6 py-3 bg-slate-800 text-slate-200 hover:text-white font-bold text-xs rounded-xl hover:bg-slate-750 transition-all text-center border border-slate-700">
-                            Return To Front Page
-                        </button>
                     </div>
                 </div>
 
@@ -138,11 +135,11 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
                 <div>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Our <span class="text-yellow-400">Creative Services Catalog</span></h2>
-                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Select your preferred dynamic configuration option. Checkout profile logs are updated instantly.</p>
+                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Select your preferred package layout variant to automatically calibrate checkout profiles.</p>
                 </div>
                 <div class="flex items-center space-x-2 text-[11px] text-slate-400 bg-slate-900 p-2 rounded-lg border border-slate-800 self-start">
                     <span class="w-2.5 h-2.5 bg-yellow-400 rounded-full inline-block animate-pulse"></span>
-                    <span>Real-time Dynamic Pricing Active</span>
+                    <span>Real-time Multi-tier Matrix Active</span>
                 </div>
             </div>
             <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -208,7 +205,10 @@
                     <input type="text" id="cust-login-user" required placeholder="Your username" class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-lg p-2.5 text-xs sm:text-sm text-white outline-none transition-colors">
                 </div>
                 <div class="space-y-1">
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider">Password</label>
+                    <div class="flex justify-between items-center">
+                        <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider">Password</label>
+                        <button type="button" onclick="toggleCustomerAuthTab('forgot')" class="text-[11px] text-yellow-400 hover:underline font-medium bg-transparent border-0 p-0 cursor-pointer">Forgot Credentials?</button>
+                    </div>
                     <input type="password" id="cust-login-pass" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-lg p-2.5 text-xs sm:text-sm text-white outline-none transition-colors">
                 </div>
                 <div id="cust-login-error" class="text-rose-500 text-xs font-semibold hidden bg-rose-500/10 p-2.5 rounded border border-rose-500/20 text-center">
@@ -247,6 +247,22 @@
                 <button type="submit" class="w-full py-3.5 bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-black rounded-lg transition-all text-xs uppercase tracking-widest">
                     Register Profile &amp; Submit details
                 </button>
+            </form>
+
+            <form id="customer-forgot-form" onsubmit="handleCustomerRecovery(event)" class="space-y-4 hidden animate-fadeIn">
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider">Account Username or Registered Email</label>
+                    <input type="text" id="cust-recovery-input" required placeholder="Enter username or email address" class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-lg p-2.5 text-xs sm:text-sm text-white outline-none transition-colors">
+                </div>
+                <div id="cust-recovery-success" class="text-slate-100 text-xs hidden bg-slate-950 border border-yellow-400/40 p-4 rounded-xl space-y-2">
+                    <p class="font-extrabold text-yellow-400 uppercase tracking-wide">✨ Temporary Redirection Key Generated!</p>
+                    <p class="text-slate-300 leading-relaxed font-mono">Use your account username alongside this temporary tracking code to log in directly:</p>
+                    <div class="bg-slate-900 border border-slate-800 px-3 py-2 rounded text-center text-white font-black text-sm tracking-widest select-all" id="cust-recovery-code-display"></div>
+                </div>
+                <div class="flex items-center gap-2 pt-2">
+                    <button type="button" onclick="toggleCustomerAuthTab('login')" class="w-1/3 py-3 bg-slate-950 text-slate-400 border border-slate-800 font-bold rounded-lg text-xs hover:text-white uppercase tracking-wider">Cancel</button>
+                    <button type="submit" class="w-2/3 py-3 bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-black rounded-lg text-xs uppercase tracking-wider">Request Access Code</button>
+                </div>
             </form>
         </div>
 
@@ -317,10 +333,10 @@
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-800 pb-4 gap-4">
                 <div>
                     <h2 class="text-2xl font-black text-white flex items-center gap-2">
-                        <span>Admin Control Space</span>
+                        <span>Admin Workspace Controls</span>
                         <span class="text-xs font-bold px-2.5 py-0.5 bg-yellow-400 text-slate-950 rounded-full">Owner Access</span>
                     </h2>
-                    <p class="text-slate-400 text-xs mt-1">Configure live inventory arrays, update dropdown options, handle incoming confirmations, and toggle job status metrics.</p>
+                    <p class="text-slate-400 text-xs mt-1">Configure product layout fields dynamically. Changes are automatically synchronized with the front-end view grid.</p>
                 </div>
                 <div class="flex space-x-2">
                     <button onclick="logoutAdmin()" class="text-xs font-bold text-rose-400 hover:text-white px-3.5 py-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-rose-500 transition-all">
@@ -332,9 +348,23 @@
                 </div>
             </div>
 
+            <div class="bg-slate-950 rounded-xl p-5 border border-slate-850 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-900 pb-3">
+                    <div>
+                        <h3 class="text-sm font-black text-white uppercase tracking-wider">Dynamic Sandbox Frame Arrays</h3>
+                        <p class="text-[11px] text-slate-500">Edit elements on the fly, upload custom asset streams, and append structural trifold drops instantly.</p>
+                    </div>
+                    <button onclick="appendBlankProductFrame()" class="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-slate-950 text-xs font-black uppercase rounded-lg shadow-md transition-all self-start sm:self-auto">
+                        (+) New Product Frame
+                    </button>
+                </div>
+                
+                <div id="admin-scratch-frames-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2"></div>
+            </div>
+
             <div class="bg-slate-950 border border-slate-850 p-5 rounded-xl space-y-4">
                 <h3 class="text-sm font-black text-white uppercase tracking-wider border-b border-slate-900 pb-2 flex items-center justify-between">
-                    <span>Live Client Workflow Controls</span>
+                    <span>Live Client Workflow Tracker</span>
                     <span class="w-2.5 h-2.5 bg-blue-500 rounded-full animate-pulse"></span>
                 </h3>
                 <div class="overflow-x-auto">
@@ -351,16 +381,6 @@
                         <tbody id="admin-workflow-table-body"></tbody>
                     </table>
                 </div>
-            </div>
-
-            <div class="bg-slate-950 rounded-xl p-5 border border-slate-850 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-900 pb-3">
-                    <div>
-                        <h3 class="text-sm font-black text-white uppercase tracking-wider">Live Inventory System Controls</h3>
-                        <p class="text-[11px] text-slate-500">Alter variables, drop-down options, add custom file system graphics instantly to customer view grids.</p>
-                    </div>
-                </div>
-                <div id="admin-inventory-control-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
         </div>
     </div>
@@ -478,37 +498,30 @@
     </footer>
 
     <script>
-    /* LOCALPERSISTENCE CORE CONTROLLERS */
+    /* LOCALPERSISTENCE SEED DATA MATRIX WITH NESTED DROPDOWNS */
     let PRODUCTS = JSON.parse(localStorage.getItem("bw_products")) || [
         {
-            id: "p_logo",
-            title: "Elite Premium Logo Suite",
-            description: "High-grade vectors, layered PSD source assets, with professional conceptual guidelines included.",
-            basePrice: 150.00,
-            stock: 12,
-            poster: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%231e293b'/><text x='50%' y='55%' font-weight='bold' font-size='12' fill='%23eab308' dominant-baseline='middle' text-anchor='middle'>LOGO SUITE</text></svg>",
-            optionsLabel: "Configuration Sizing Options",
-            options: ["Single Branding Standard Brief", "SME Corporate Master Package", "Mega Brand Visual Guideline Set"]
-        },
-        {
-            id: "p_banner",
-            title: "Dynamic Promo Banner Layout",
-            description: "Ready-to-print large displays optimized with proper bleed zones. Multi-aspect ratio design files.",
-            basePrice: 120.00,
-            stock: 8,
-            poster: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%231e293b'/><text x='50%' y='55%' font-weight='bold' font-size='12' fill='%23eab308' dominant-baseline='middle' text-anchor='middle'>PROMO BANNER</text></svg>",
-            optionsLabel: "Select Print dimensions",
-            options: ["Standard Roll-up (2ft x 5ft)", "Outdoor Bunting (3ft x 6ft)", "Custom Dynamic Large Layouts"]
-        },
-        {
-            id: "p_menu",
-            title: "Premium Restaurant Menu Design",
-            description: "Stunning professional grids styled to drive consumer conversions. Clean vector outputs.",
-            basePrice: 80.00,
-            stock: 25,
+            id: "p_frame_1",
+            title: "Menu Design",
+            dropdownLabel: "All",
             poster: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%231e293b'/><text x='50%' y='55%' font-weight='bold' font-size='12' fill='%23eab308' dominant-baseline='middle' text-anchor='middle'>MENU DESIGN</text></svg>",
-            optionsLabel: "Select Menu Page Sizing",
-            options: ["A5 Compact Trifold Leaflet", "A4 Classic Double-Sided Grid", "A3 Large Multi-Page Layout"]
+            dropdowns: [
+                { name: "Basic A4", price: 25.00, info: "-1 side\n-A4 only\n-not provide image\nedit" },
+                { name: "Basic A3/A2", price: 30.00, info: "-1 side\n-A3/A2 only\n-not provide image\nedit" },
+                { name: "Advanced Package", price: 75.00, info: "-1-3 sides\n-A4 size only\n-not provide image\nedit" },
+                { name: "Executive Package", price: 120.00, info: "-1-5 sides\n-A4 size only" },
+                { name: "Leading Package", price: 240.00, info: "-1-10 sides\n-A4 size only\n-provide edit image" },
+                { name: "Clean/Modern", price: 50.00, info: "-1 side\n-provide edit image\n-digital and clean" }
+            ]
+        },
+        {
+            id: "p_frame_2",
+            title: "Second product",
+            dropdownLabel: "All",
+            poster: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%231e293b'/><text x='50%' y='55%' font-weight='bold' font-size='12' fill='%23eab308' dominant-baseline='middle' text-anchor='middle'>SECOND PRODUCT</text></svg>",
+            dropdowns: [
+                { name: "Standard Setup Package", price: 60.00, info: "-Basic vector layout guidelines" }
+            ]
         }
     ];
 
@@ -517,7 +530,6 @@
         { id: "fpx", name: "Online Transfer with FPX" }
     ];
 
-    /* ENGINE WORKFLOW SYSTEM STATES */
     let cart = [];
     let currentUser = JSON.parse(localStorage.getItem("current_session_user")) || null;
     let selectedTermId = "";
@@ -549,7 +561,6 @@
         localStorage.setItem("bw_products", JSON.stringify(PRODUCTS));
     }
 
-    /* VIEW SWITCH ENGINE WITH ADMIN PROTECTION FORCED LOOP */
     function switchView(viewName) {
         if (viewName === 'admin' && !isAdminLoggedIn) {
             document.getElementById('admin-gate-modal').classList.remove('hidden');
@@ -562,6 +573,7 @@
 
         if (viewName === 'store') {
             document.getElementById('store-view').classList.remove('hidden');
+            renderProductCatalog();
         } else if (viewName === 'customer-auth') {
             document.getElementById('customer-auth-view').classList.remove('hidden');
         } else if (viewName === 'admin' && isAdminLoggedIn) {
@@ -587,7 +599,7 @@
             document.getElementById('admin-gate-modal').querySelector('form').reset();
             switchView('admin');
         } else {
-            showToast("Invalid root matrix authorization guidelines.", "error");
+            showToast("Invalid administrative credentials.", "error");
         }
     }
 
@@ -621,49 +633,70 @@
         }, 4000);
     }
 
-    /* CUSTOMER RENDER PIPELINES */
+    /* FRONT-END CLIENT RENDER ENGINE */
     function renderProductCatalog() {
         const container = document.getElementById('products-grid');
         if(!container) return;
         container.innerHTML = "";
 
+        if (PRODUCTS.length === 0) {
+            container.innerHTML = `<div class="col-span-full text-center text-slate-500 py-12 italic text-xs">No live inventory entries detected in space matrix.</div>`;
+            return;
+        }
+
         PRODUCTS.forEach(product => {
             const card = document.createElement('div');
-            card.className = "bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-yellow-400/40 transition-all duration-300 flex flex-col justify-between group";
+            card.className = "bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-yellow-400/30 transition-all duration-300 flex flex-col justify-between group";
             
-            let optionsHTML = `
-                <div class="space-y-1.5 pt-3">
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">${product.optionsLabel}</label>
-                    <select id="option-select-${product.id}" class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-lg p-2.5 text-xs text-white outline-none transition-colors">
-            `;
-            product.options.forEach((opt) => {
-                optionsHTML += `<option value="${opt}">${opt}</option>`;
-            });
-            optionsHTML += `</select></div>`;
+            let selectionTierHTML = "";
+            if (product.dropdowns && product.dropdowns.length > 0) {
+                selectionTierHTML = `
+                    <div class="space-y-2 pt-2">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Drop-down: ${product.dropdownLabel}</label>
+                        <select id="frontend-select-${product.id}" onchange="updateFrontendSelectedPrice('${product.id}')" class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-lg p-2.5 text-xs text-white outline-none transition-colors">
+                            ${product.dropdowns.map((drop, dIdx) => `<option value="${dIdx}">[RM ${drop.price.toFixed(2)}] ${drop.name}</option>`).join('')}
+                        </select>
+                        <div id="frontend-info-box-${product.id}" class="bg-slate-950/60 p-3 rounded-lg border border-slate-850 text-[11px] text-slate-400 font-mono whitespace-pre-line mt-1.5 leading-relaxed">
+                            ${product.dropdowns[0] ? product.dropdowns[0].info || '- standard tier selection summary' : ''}
+                        </div>
+                    </div>
+                `;
+            } else {
+                selectionTierHTML = `<div class="text-[11px] text-slate-500 italic py-2">No configurations provided.</div>`;
+            }
+
+            const activePrice = product.dropdowns && product.dropdowns[0] ? product.dropdowns[0].price : 0.00;
 
             card.innerHTML = `
-                <div class="space-y-3">
-                    <div class="aspect-video w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-850 flex items-center justify-center mb-2">
-                        <img src="${product.poster}" class="w-full h-full object-cover" alt="Product Poster" />
+                <div class="space-y-4">
+                    <div class="aspect-video w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-850 flex items-center justify-center relative shadow-inner">
+                        <img src="${product.poster}" class="w-full h-full object-cover" alt="Product Frame Asset" />
                     </div>
-                    <div class="flex items-start justify-between">
-                        <span class="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2.5 py-0.5 rounded-md">Live Stock: ${product.stock}</span>
-                        <span class="text-lg font-black text-white">RM ${product.basePrice.toFixed(2)}</span>
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <h3 class="text-base font-black tracking-tight text-white uppercase group-hover:text-yellow-400 transition-colors">${product.title}</h3>
+                        <span id="frontend-price-badge-${product.id}" class="text-base font-black text-yellow-400">RM ${activePrice.toFixed(2)}</span>
                     </div>
-                    <div>
-                        <h3 class="text-base font-extrabold text-white group-hover:text-yellow-400 transition-colors">${product.title}</h3>
-                        <p class="text-slate-400 text-xs mt-1.5 leading-relaxed font-light">${product.description}</p>
-                    </div>
-                    ${optionsHTML}
+                    ${selectionTierHTML}
                 </div>
-                <div class="pt-5 mt-4 border-t border-slate-800/80">
-                    <button onclick="addProductToBasket('${product.id}')" ${product.stock <= 0 ? 'disabled' : ''} class="w-full py-2.5 bg-yellow-400 hover:bg-yellow-500 disabled:bg-slate-800 disabled:text-slate-500 text-slate-950 font-extrabold text-xs rounded-xl transition-all uppercase tracking-wider shadow-md">
-                        <span>${product.stock > 0 ? 'Add To Basket' : 'Out of Stock'}</span>
+                <div class="pt-4 border-t border-slate-800/60 mt-4">
+                    <button onclick="addProductToBasket('${product.id}')" class="w-full py-2.5 bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-black text-xs rounded-xl transition-all uppercase tracking-wider shadow-md">
+                        Add Package variant to basket
                     </button>
                 </div>
             `;
             container.appendChild(card);
         });
+    }
+
+    function updateFrontendSelectedPrice(productId) {
+        const product = PRODUCTS.find(p => p.id === productId);
+        const dropdownIdx = document.getElementById(`frontend-select-${productId}`).value;
+        const selectedDropdown = product.dropdowns[dropdownIdx];
+        
+        if (selectedDropdown) {
+            document.getElementById(`frontend-price-badge-${productId}`).innerText = `RM ${selectedDropdown.price.toFixed(2)}`;
+            document.getElementById(`frontend-info-box-${productId}`).innerText = selectedDropdown.info || '- standard tier selection summary';
+        }
     }
 
     function loadActiveSession() {
@@ -735,6 +768,41 @@
         }
     }
 
+    function handleCustomerRecovery(event) {
+        event.preventDefault();
+        const inputVal = document.getElementById('cust-recovery-input').value.trim();
+        const successDiv = document.getElementById('cust-recovery-success');
+        const codeDisplay = document.getElementById('cust-recovery-code-display');
+        
+        const registeredUsers = JSON.parse(localStorage.getItem("active_users")) || {};
+        let targetUserKey = null;
+
+        // Search active users matrix mapping matches
+        for (const username in registeredUsers) {
+            if (username.toLowerCase() === inputVal.toLowerCase() || registeredUsers[username].email.toLowerCase() === inputVal.toLowerCase()) {
+                targetUserKey = username;
+                break;
+            }
+        }
+
+        if (targetUserKey) {
+            // Generate simple random 6-digit access code sequence
+            const generatedCode = "BZ-" + Math.floor(100000 + Math.random() * 900000);
+            
+            // Rewrite transient user password directly within DB framework
+            registeredUsers[targetUserKey].pass = generatedCode;
+            localStorage.setItem("active_users", JSON.stringify(registeredUsers));
+            
+            // Print key display metrics to view viewport layout
+            codeDisplay.innerText = generatedCode;
+            successDiv.classList.remove('hidden');
+            showToast("Temporary structural code processed safely.");
+        } else {
+            successDiv.classList.add('hidden');
+            showToast("No verified profile records match credentials.", "error");
+        }
+    }
+
     function logoutCustomer() {
         currentUser = null;
         localStorage.removeItem("current_session_user");
@@ -750,11 +818,13 @@
     function toggleCustomerAuthTab(tab) {
         const loginForm = document.getElementById('customer-login-form');
         const registerForm = document.getElementById('customer-register-form');
+        const forgotForm = document.getElementById('customer-forgot-form');
         const tabLoginBtn = document.getElementById('tab-cust-login');
         const tabRegBtn = document.getElementById('tab-cust-register');
         
         loginForm.classList.add('hidden');
         registerForm.classList.add('hidden');
+        forgotForm.classList.add('hidden');
         
         if (tab === 'register') {
             registerForm.classList.remove('hidden');
@@ -764,10 +834,16 @@
             loginForm.classList.remove('hidden');
             tabLoginBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-md bg-yellow-400 text-slate-950 transition-all";
             tabRegBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all";
+        } else if (tab === 'forgot') {
+            forgotForm.classList.remove('hidden');
+            document.getElementById('cust-recovery-success').classList.add('hidden');
+            document.getElementById('customer-forgot-form').reset();
+            tabLoginBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all";
+            tabRegBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all";
         }
     }
 
-    /* BASKET LOGIC ENGINE */
+    /* BASKET REDISTRIBUTION MATRIX */
     function toggleCartDrawer(state) {
         const backdrop = document.getElementById('cart-drawer-backdrop');
         const panel = document.getElementById('cart-drawer-panel');
@@ -785,30 +861,29 @@
 
     function addProductToBasket(productId) {
         const product = PRODUCTS.find(p => p.id === productId);
-        if(product.stock <= 0) {
-            showToast("Item is out of stock!", "error");
+        const dropdownIdx = document.getElementById(`frontend-select-${productId}`).value;
+        const selectedDropdown = product.dropdowns[dropdownIdx];
+
+        if(!selectedDropdown) {
+            showToast("Please choose an option first.", "error");
             return;
         }
-        const selectedOpt = document.getElementById(`option-select-${productId}`).value;
-        const existing = cart.find(item => item.id === productId && item.optionSelected === selectedOpt);
+
+        const existing = cart.find(item => item.id === productId && item.optionSelected === selectedDropdown.name);
 
         if (existing) {
-            if(existing.quantity >= product.stock) {
-                showToast("Cannot add more than available live inventory.", "error");
-                return;
-            }
             existing.quantity += 1;
         } else {
             cart.push({
                 id: product.id,
                 title: product.title,
-                optionSelected: selectedOpt,
-                singlePrice: product.basePrice,
+                optionSelected: selectedDropdown.name,
+                singlePrice: selectedDropdown.price,
                 quantity: 1
             });
         }
         updateCartBadgeCount();
-        showToast(`Added ${product.title} to basket!`);
+        showToast(`Added ${product.title} (${selectedDropdown.name}) to basket!`);
     }
 
     function updateCartBadgeCount() {
@@ -825,13 +900,6 @@
 
     function changeCartItemQty(index, increment) {
         const targetCartItem = cart[index];
-        const originalProduct = PRODUCTS.find(p => p.id === targetCartItem.id);
-        
-        if (increment > 0 && targetCartItem.quantity >= originalProduct.stock) {
-            showToast("Cannot exceed live catalog inventory limit.", "error");
-            return;
-        }
-        
         targetCartItem.quantity += increment;
         if (targetCartItem.quantity <= 0) {
             cart.splice(index, 1);
@@ -908,18 +976,8 @@
         }
 
         const selectedTerm = document.getElementById('checkout-term-selector').value;
-
         let totalAmount = cart.reduce((sum, item) => sum + (item.singlePrice * item.quantity), 0);
         
-        cart.forEach(item => {
-            const prod = PRODUCTS.find(p => p.id === item.id);
-            if (prod) {
-                prod.stock = Math.max(0, prod.stock - item.quantity);
-            }
-        });
-        saveProductsToStorage();
-        renderProductCatalog();
-
         WORKFLOW_STATE.hasRequest = true;
         WORKFLOW_STATE.customerUsername = currentUser.username;
         WORKFLOW_STATE.status = "Pending Confirmation";
@@ -935,7 +993,7 @@
         showToast("Design selection successfully locked down to your profile dashboard!");
     }
 
-    /* CUSTOMER ACTION WORKFLOW SYSTEM CONTROLLER */
+    /* REALTIME CUSTOMER PROFILE PORTAL CONTROLLER */
     function updateCustomerWorkflowUI() {
         const area = document.getElementById('dynamic-workflow-btn-placeholder');
         const badge = document.getElementById('customer-status-badge');
@@ -971,7 +1029,6 @@
             `;
         } else if (WORKFLOW_STATE.status === "Approved") {
             badge.className = "px-3 py-1 rounded text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
-            
             if (WORKFLOW_STATE.selectedTerm === "cash") {
                 area.innerHTML = `
                     <button onclick="executeCashQuotationApproval()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-blue-600/20">
@@ -1060,22 +1117,22 @@
         }
         const submitBtn = document.getElementById('toyyibpay-submit-btn');
         submitBtn.disabled = true;
-        submitBtn.innerText = "Processing secure external redirection layer...";
+        submitBtn.innerText = "Processing redirection form structure...";
 
         setTimeout(() => {
             submitBtn.disabled = false;
             submitBtn.innerText = "Proceed Authorization Transfer";
             closeToyyibpayModal();
-            showToast("Redirection initialized to Toyyibpay active payment form structure.");
+            showToast("Redirection initialized to Toyyibpay active payment gateway.");
             window.location.href = "https://toyyibpay.com/brandworks";
         }, 1200);
     }
 
-    /* ADMIN CONTROL WORKSPACE ENGINE SECTORS */
+    /* ADMINISTRATIVE CORE WORKSPACE SECTORS */
     function renderAdminWorkspace() {
         if(!isAdminLoggedIn) return;
         renderAdminWorkflowPanel();
-        renderAdminInventorySystem();
+        renderAdminScratchSandbox();
     }
 
     function renderAdminWorkflowPanel() {
@@ -1133,6 +1190,174 @@
         tbody.appendChild(tr);
     }
 
+    /* THE EDITABLE SCRATCH STYLE CONTROLLER FRAME */
+    function renderAdminScratchSandbox() {
+        const container = document.getElementById('admin-scratch-frames-container');
+        if (!container) return;
+        container.innerHTML = "";
+
+        PRODUCTS.forEach((product, pIdx) => {
+            const block = document.createElement('div');
+            block.className = "bg-slate-900 border-2 border-slate-800 rounded-2xl p-6 relative space-y-4 shadow-xl";
+            
+            let nestedDropdownsHTML = "";
+            product.dropdowns.forEach((drop, dIdx) => {
+                nestedDropdownsHTML += `
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-850 space-y-2 relative group">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-[10px] text-yellow-500 font-bold uppercase tracking-wider">List Drop-down ${dIdx + 1}</span>
+                            <button onclick="removeScratchDropdown(${pIdx}, ${dIdx})" class="text-[10px] font-bold text-rose-500 hover:underline">Remove Option</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[9px] uppercase font-bold text-slate-500">Tier Name</label>
+                                <input type="text" value="${drop.name}" onchange="updateScratchDropdownValue(${pIdx}, ${dIdx}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-800 text-white rounded p-1 text-xs font-semibold outline-none focus:border-yellow-400" />
+                            </div>
+                            <div>
+                                <label class="block text-[9px] uppercase font-bold text-slate-500">Price (RM)</label>
+                                <input type="number" step="0.01" value="${drop.price}" onchange="updateScratchDropdownValue(${pIdx}, ${dIdx}, 'price', this.value)" class="w-full bg-slate-900 border border-slate-800 text-yellow-400 rounded p-1 text-xs font-bold outline-none focus:border-yellow-400" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] uppercase font-bold text-slate-500">*Small Font Info*</label>
+                            <textarea rows="2" onchange="updateScratchDropdownValue(${pIdx}, ${dIdx}, 'info', this.value)" class="w-full bg-slate-900 border border-slate-800 text-slate-400 font-mono rounded p-1.5 text-[10px] outline-none focus:border-yellow-400 resize-none">${drop.info || ''}</textarea>
+                        </div>
+                    </div>
+                `;
+            });
+
+            block.innerHTML = `
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <span class="text-xs font-mono font-bold text-slate-500">FRAME CODE: ${product.id}</span>
+                    <button onclick="deleteProductFrame(${pIdx})" class="w-6 h-6 rounded-full bg-rose-600/20 hover:bg-rose-600 text-rose-400 hover:text-white flex items-center justify-center text-xs font-black transition-all">X</button>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Product Image (Upload from device or PC) ! Editable</label>
+                    <div class="flex items-center gap-4 bg-slate-950 p-3 rounded-xl border border-slate-850">
+                        <img id="scratch-preview-${product.id}" src="${product.poster}" class="w-14 h-14 object-cover rounded bg-slate-900 border border-slate-800" />
+                        <input type="file" accept="image/*" onchange="handleScratchPosterStream(event, ${pIdx})" class="text-[11px] text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[10px] file:font-black file:bg-slate-800 file:text-white hover:file:bg-slate-750 cursor-pointer" />
+                    </div>
+                </div>
+
+                <hr class="border-slate-800" />
+
+                <div class="space-y-1">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">*Big Font* Product Title ! Editable</label>
+                    <input type="text" value="${product.title}" onchange="PRODUCTS[pIdx].title = this.value; saveProductsToStorage();" class="w-full bg-slate-950 border border-slate-800 text-white rounded-lg p-2.5 text-sm font-black outline-none focus:border-yellow-400" />
+                </div>
+
+                <hr class="border-slate-800" />
+
+                <div class="space-y-1">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Drop-down Base Group Label ! Editable</label>
+                    <input type="text" value="${product.dropdownLabel}" onchange="PRODUCTS[pIdx].dropdownLabel = this.value; saveProductsToStorage();" class="w-full bg-slate-950 border border-slate-800 text-yellow-400 font-bold rounded-lg p-2 text-xs outline-none focus:border-yellow-400" />
+                </div>
+
+                <div class="space-y-3 max-h-[220px] overflow-y-auto pr-1 hide-scrollbar">
+                    ${nestedDropdownsHTML}
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                    <button onclick="appendNewScratchDropdown(${pIdx})" class="py-2 bg-slate-950 border border-slate-800 hover:border-yellow-400/40 text-slate-300 font-bold text-xs rounded-xl transition-all">
+                        (+) New Drop-down
+                    </button>
+                    <button onclick="popLastScratchDropdown(${pIdx})" class="py-2 bg-slate-950 border border-slate-800 hover:border-rose-500/40 text-rose-400 font-bold text-xs rounded-xl transition-all">
+                        (-) Delete Drop-down
+                    </button>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800/80">
+                    <button onclick="commitScratchChangesLive(${pIdx})" class="w-full py-2.5 bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-md">
+                        [Button: Committed changes to live]
+                    </button>
+                </div>
+            `;
+            container.appendChild(block);
+        });
+    }
+
+    function appendBlankProductFrame() {
+        const nextId = "p_frame_" + (PRODUCTS.length + 1);
+        PRODUCTS.push({
+            id: nextId,
+            title: "New Custom Title Frame",
+            dropdownLabel: "All",
+            poster: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%231e293b'/><text x='50%' y='55%' font-weight='bold' font-size='10' fill='%23eab308' dominant-baseline='middle' text-anchor='middle'>BLANK FRAME</text></svg>",
+            dropdowns: [
+                { name: "Default Option Package", price: 10.00, info: "- custom guidelines info entry" }
+            ]
+        });
+        saveProductsToStorage();
+        renderAdminScratchSandbox();
+        showToast("Appended new editable product layout frame.");
+    }
+
+    function deleteProductFrame(index) {
+        PRODUCTS.splice(index, 1);
+        saveProductsToStorage();
+        renderAdminScratchSandbox();
+        showToast("Removed product frame safely.");
+    }
+
+    function handleScratchPosterStream(event, pIdx) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            PRODUCTS[pIdx].poster = e.target.result;
+            document.getElementById(`scratch-preview-${PRODUCTS[pIdx].id}`).src = e.target.result;
+            showToast("Encoded file stream asset successfully.");
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function appendNewScratchDropdown(pIdx) {
+        PRODUCTS[pIdx].dropdowns.push({
+            name: "Custom tier option variant",
+            price: 50.00,
+            info: ":-1 side\n-provide edit image\n-digital design"
+        });
+        saveProductsToStorage();
+        renderAdminScratchSandbox();
+    }
+
+    function popLastScratchDropdown(pIdx) {
+        if(PRODUCTS[pIdx].dropdowns.length <= 1) {
+            showToast("At least one drop-down option variant configuration is mandated.", "error");
+            return;
+        }
+        PRODUCTS[pIdx].dropdowns.pop();
+        saveProductsToStorage();
+        renderAdminScratchSandbox();
+    }
+
+    function removeScratchDropdown(pIdx, dIdx) {
+        if(PRODUCTS[pIdx].dropdowns.length <= 1) {
+            showToast("At least one drop-down option variant configuration is mandated.", "error");
+            return;
+        }
+        PRODUCTS[pIdx].dropdowns.splice(dIdx, 1);
+        saveProductsToStorage();
+        renderAdminScratchSandbox();
+    }
+
+    function updateScratchDropdownValue(pIdx, dIdx, field, val) {
+        if (field === 'price') {
+            PRODUCTS[pIdx].dropdowns[dIdx].price = Math.max(0, parseFloat(val) || 0.00);
+        } else {
+            PRODUCTS[pIdx].dropdowns[dIdx][field] = val;
+        }
+        saveProductsToStorage();
+    }
+
+    function commitScratchChangesLive(pIdx) {
+        saveProductsToStorage();
+        renderProductCatalog();
+        showToast(`🎉 Changes for frame "${PRODUCTS[pIdx].title}" committed successfully live!`);
+    }
+
     function adminApproveWorkflowOrder() {
         WORKFLOW_STATE.status = "Approved";
         saveWorkflowToStorage();
@@ -1147,72 +1372,6 @@
         renderAdminWorkspace();
         updateCustomerWorkflowUI();
         showToast("Workflow order marked Completed safely.");
-    }
-
-    function renderAdminInventorySystem() {
-        const container = document.getElementById('admin-inventory-control-grid');
-        if(!container) return;
-        container.innerHTML = "";
-
-        PRODUCTS.forEach((product, idx) => {
-            const card = document.createElement('div');
-            card.className = "bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3";
-            let currentOptionsString = product.options.join(", ");
-
-            card.innerHTML = `
-                <div class="flex items-center space-x-2 border-b border-slate-800 pb-2">
-                    <img id="admin-preview-img-${product.id}" src="${product.poster}" class="w-10 h-10 object-cover rounded bg-slate-950 border border-slate-800" />
-                    <div class="truncate">
-                        <h4 class="font-bold text-xs text-white truncate">${product.title}</h4>
-                        <span class="text-[9px] text-yellow-400 font-mono">${product.id}</span>
-                    </div>
-                </div>
-                <div class="space-y-2 text-xs">
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Adjust Stock Level</label>
-                        <input type="number" id="inv-stock-${idx}" value="${product.stock}" class="w-full bg-slate-950 border border-slate-800 text-white p-1.5 rounded outline-none font-bold" />
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Dropdown Configurations (Comma Separated)</label>
-                        <input type="text" id="inv-opts-${idx}" value="${currentOptionsString}" class="w-full bg-slate-950 border border-slate-800 text-white p-1.5 rounded text-[11px] outline-none" />
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Upload Custom Poster Template</label>
-                        <input type="file" accept="image/*" onchange="handleAdminPosterUpload(event, ${idx})" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-slate-800 file:text-white hover:file:bg-slate-750 cursor-pointer" />
-                    </div>
-                    <button onclick="saveAdminInventoryLineItem(${idx})" class="w-full mt-2 py-1.5 bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-black uppercase text-[10px] tracking-wider rounded transition-all">
-                        Commit Changes Live
-                    </button>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    }
-
-    function handleAdminPosterUpload(event, index) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            PRODUCTS[index].poster = e.target.result;
-            document.getElementById(`admin-preview-img-${PRODUCTS[index].id}`).src = e.target.result;
-            showToast("Poster source image encoded successfully. Commit changes to update customer view.");
-        }
-        reader.readAsDataURL(file);
-    }
-
-    function saveAdminInventoryLineItem(index) {
-        const stockInput = document.getElementById(`inv-stock-${index}`).value;
-        const optsInput = document.getElementById(`inv-opts-${index}`).value;
-
-        PRODUCTS[index].stock = Math.max(0, parseInt(stockInput) || 0);
-        PRODUCTS[index].options = optsInput.split(",").map(str => str.trim()).filter(str => str.length > 0);
-
-        saveProductsToStorage();
-        renderProductCatalog();
-        renderAdminWorkspace();
-        showToast(`Catalog modifications for item ${PRODUCTS[index].title} are now live.`);
     }
     </script>
 </body>
