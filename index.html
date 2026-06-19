@@ -362,7 +362,7 @@
                         (+) New Product Frame
                     </button>
                 </div>
-                
+               
                 <div id="admin-scratch-frames-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2"></div>
             </div>
 
@@ -508,9 +508,9 @@
             id: "p_frame_1",
             title: "Menu Design",
             dropdownLabel: "All",
-            poster: "previousmenu.png",
+            poster: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80",
             dropdowns: [
-                { name: "Basic A4", price: 120.00, info: "- 1 side\n- A4 only\n- not provide image edit" },
+                { name: "Basic A4", price: 25.00, info: "- 1 side\n- A4 only\n- not provide image edit" },
                 { name: "Basic A3/A2", price: 30.00, info: "- 1 side\n- A3/A2 only\n- not provide image edit" },
                 { name: "Advanced Package", price: 75.00, info: "- 1-3 sides\n- A4 size only\n- not provide image edit" },
                 { name: "Executive Package", price: 120.00, info: "- 1-5 sides\n- A4 size only" },
@@ -520,14 +520,11 @@
         },
         {
             id: "p_frame_2",
-            title: "Logo Design",
+            title: "Second product",
             dropdownLabel: "All",
-            poster: "logodesign.png",
+            poster: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%231e293b'/><text x='50%' y='55%' font-weight='bold' font-size='12' fill='%23eab308' dominant-baseline='middle' text-anchor='middle'>SECOND PRODUCT</text></svg>",
             dropdowns: [
-                { name: "Starter", price: 120.00, info: "- 1 side\n- A4 only\n- not provide image edit" },
-                { name: "Bronze", price: 250.00, info: "- 1 side\n- A3/A2 only\n- not provide image edit" },
-                { name: "Silver", price: 380.00, info: "- 1-3 sides\n- A4 size only\n- not provide image edit" },
-                { name: "Gold", price: 510.00, info: "- 1-5 sides\n- A4 size only" }
+                { name: "Standard Setup Package", price: 60.00, info: "- Basic vector layout guidelines" }
             ]
         }
     ];
@@ -576,7 +573,7 @@
 
         document.getElementById('store-view').classList.add('hidden');
         document.getElementById('customer-auth-view').classList.add('hidden');
-        document.getElementassList.add('hidden');
+        document.getElementById('admin-view').classList.add('hidden');
 
         if (viewName === 'store') {
             document.getElementById('store-view').classList.remove('hidden');
@@ -654,7 +651,7 @@
         PRODUCTS.forEach(product => {
             const card = document.createElement('div');
             card.className = "bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl transition-all hover:scale-[1.01] hover:border-yellow-500/30 flex flex-col justify-between";
-            
+           
             let selectionTierHTML = "";
             if (product.dropdowns && product.dropdowns.length > 0) {
                 // Split multi-line requirements info text safely into modern checkmark item lines
@@ -721,11 +718,11 @@
         const product = PRODUCTS.find(p => p.id === productId);
         const dropdownIdx = document.getElementById(`frontend-select-${productId}`).value;
         const selectedDropdown = product.dropdowns[dropdownIdx];
-        
+       
         if (selectedDropdown) {
             document.getElementById(`frontend-price-badge-${productId}`).innerText = `RM ${selectedDropdown.price.toFixed(2)}`;
             const infoBox = document.getElementById(`frontend-info-box-${productId}`);
-            
+           
             const infoLines = (selectedDropdown.info || '').split('\n').filter(l => l.trim() !== '');
             infoBox.innerHTML = infoLines.map(line => `
                 <div class="flex items-center space-x-2 text-xs text-slate-300 animate-fadeIn">
@@ -814,7 +811,7 @@
         const inputVal = document.getElementById('cust-recovery-input').value.trim();
         const successDiv = document.getElementById('cust-recovery-success');
         const codeDisplay = document.getElementById('cust-recovery-code-display');
-        
+       
         const registeredUsers = JSON.parse(localStorage.getItem("active_users")) || {};
         let targetUserKey = null;
 
@@ -829,7 +826,7 @@
             const generatedCode = "BZ-" + Math.floor(100000 + Math.random() * 900000);
             registeredUsers[targetUserKey].pass = generatedCode;
             localStorage.setItem("active_users", JSON.stringify(registeredUsers));
-            
+           
             codeDisplay.innerText = generatedCode;
             successDiv.classList.remove('hidden');
             showToast("Temporary structural code processed safely.");
@@ -857,11 +854,11 @@
         const forgotForm = document.getElementById('customer-forgot-form');
         const tabLoginBtn = document.getElementById('tab-cust-login');
         const tabRegBtn = document.getElementById('tab-cust-register');
-        
+       
         loginForm.classList.add('hidden');
         registerForm.classList.add('hidden');
         forgotForm.classList.add('hidden');
-        
+       
         if (tab === 'register') {
             registerForm.classList.remove('hidden');
             tabRegBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-md bg-yellow-400 text-slate-950 transition-all";
@@ -1013,7 +1010,7 @@
 
         const selectedTerm = document.getElementById('checkout-term-selector').value;
         let totalAmount = cart.reduce((sum, item) => sum + (item.singlePrice * item.quantity), 0);
-        
+       
         WORKFLOW_STATE.hasRequest = true;
         WORKFLOW_STATE.customerUsername = currentUser.username;
         WORKFLOW_STATE.status = "Pending Confirmation";
@@ -1034,7 +1031,7 @@
         const area = document.getElementById('dynamic-workflow-btn-placeholder');
         const badge = document.getElementById('customer-status-badge');
         const termLabel = document.getElementById('cust-det-term');
-        
+       
         if(currentUser && termLabel) {
             termLabel.innerText = WORKFLOW_STATE.hasRequest && WORKFLOW_STATE.customerUsername === currentUser.username
                 ? (WORKFLOW_STATE.selectedTerm === 'cash' ? "Cash Only" : "Online Transfer with FPX")
@@ -1235,7 +1232,7 @@
         PRODUCTS.forEach((product, pIdx) => {
             const block = document.createElement('div');
             block.className = "bg-slate-900 border-2 border-slate-800 rounded-2xl p-6 relative space-y-4 shadow-xl";
-            
+           
             let nestedDropdownsHTML = "";
             product.dropdowns.forEach((drop, dIdx) => {
                 nestedDropdownsHTML += `
